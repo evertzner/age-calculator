@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+---
+
+<script>
+  document.querySelector('#btnCalculate').addEventListener('click', () => {
+    document.querySelector('#lblDay').classList.add('border-red-400');
+  });
+</script>
+
+<Layout title='Welcome to Astro.'>
+  <main class='bg-white px-6 py-10 roun1ed-3xl rounded-br-full'>
+    <div class='flex flex-col w-28 gap-1'>
+      <label class='text-smokey-grey font-bold tracking-[0.15em]'>DAY</label>
+      <input
+        id='lblDay'
+        type='text'
+        class='border-light-grey border outline-none focus:border-purple font-bold text-2xl py-4 px-5 rounded-lg'
+        maxlength='2'
+        placeholder='DD'
+      />
+    </div>
+    <button id='btnCalculate' class='bg-purple hover:bg-off-black transition-all p-5 rounded-full'>
+      <img src='src/images/icon-arrow.svg' width='24' alt='icon-arrow' />
+    </button>
+  </main>
+</Layout>
