@@ -4,25 +4,114 @@ import Card from '../components/Card.astro';
 ---
 
 <script>
-  document.querySelector('#btnCalculate').addEventListener('click', () => {
-    document.querySelector('#lblDay').classList.add('border-red-400');
+  import moment from 'moment';
+  const btnCalculate = document.querySelector('#btnCalculate');
+  const inputDay = document.querySelector('#inputDay') as HTMLInputElement;
+  const inputMonth = document.querySelector('#inputMonth') as HTMLInputElement;
+  const inputYear = document.querySelector('#inputYear') as HTMLInputElement;
+  const yearsValue = document.querySelector('#yearsValue') as HTMLSpanElement;
+  const yearsPlural = document.querySelector('#yearsPlural') as HTMLSpanElement;
+
+  inputDay.addEventListener('keypress', (e: KeyboardEvent) => {
+    if (isNaN(parseInt(e.key))) e.preventDefault();
+  });
+
+  inputMonth.addEventListener('keypress', (e: KeyboardEvent) => {
+    if (isNaN(parseInt(e.key))) e.preventDefault();
+  });
+
+  inputYear.addEventListener('keypress', (e: KeyboardEvent) => {
+    if (isNaN(parseInt(e.key))) e.preventDefault();
+  });
+
+  const addZeroAtStart = (element: HTMLInputElement) => {
+    if (element.value.length === 1) {
+      return '0' + element.value;
+    } else {
+      return element.value;
+    }
+  };
+
+  function timeFromGivenDate() {
+    const startDate = moment(
+      `${addZeroAtStart(inputDay)}/${addZeroAtStart(inputMonth)}/${addZeroAtStart(inputYear)}`,
+      'DD/MM/YYYY',
+      true
+    );
+
+    const currentDate = moment();
+
+    const years = currentDate.diff(startDate, 'years');
+
+    startDate.add(years, 'years');
+
+    const months = currentDate.diff(startDate, 'months');
+
+    startDate.add(months, 'months');
+
+    const days = currentDate.diff(startDate, 'days');
+
+    if (startDate.isValid()) {
+      return { years, months, days };
+    } else {
+      return false;
+    }
+  }
+
+  btnCalculate.addEventListener('click', () => {
+    const fromGivenDate = timeFromGivenDate();
+
+    if (fromGivenDate) {
+      const { years, months, days } = fromGivenDate;
+      yearsValue.innerText = years.toString();
+      yearsPlural.innerText = years > 1 ? 's' : '';
+
+      inputDay.classList.remove('border-light-red');
+      inputMonth.classList.remove('border-light-red');
+      inputYear.classList.remove('border-light-red');
+    } else {
+      inputDay.classList.add('border-light-red');
+      inputMonth.classList.add('border-light-red');
+      inputYear.classList.add('border-light-red');
+    }
   });
 </script>
 
 <Layout title='Welcome to Astro.'>
   <main class='bg-white px-6 py-10 roun1ed-3xl rounded-br-full'>
     <div class='flex flex-col w-28 gap-1'>
-      <label class='text-smokey-grey font-bold tracking-[0.15em]'>DAY</label>
+      <label for='inputDay' class='text-smokey-grey font-bold tracking-[0.15em]'>DAY</label>
       <input
-        id='lblDay'
+        id='inputDay'
         type='text'
         class='border-light-grey border outline-none focus:border-purple font-bold text-2xl py-4 px-5 rounded-lg'
         maxlength='2'
         placeholder='DD'
       />
     </div>
+    <div class='flex flex-col w-28 gap-1'>
+      <label for='inputMonth' class='text-smokey-grey font-bold tracking-[0.15em]'>MONTH</label>
+      <input
+        id='inputMonth'
+        type='text'
+        class='border-light-grey border outline-none focus:border-purple font-bold text-2xl py-4 px-5 rounded-lg'
+        maxlength='2'
+        placeholder='MM'
+      />
+    </div>
+    <div class='flex flex-col w-28 gap-1'>
+      <label for='inputYear' class='text-smokey-grey font-bold tracking-[0.15em]'>YEAR</label>
+      <input
+        id='inputYear'
+        type='text'
+        class='border-light-grey border outline-none focus:border-purple font-bold text-2xl py-4 px-5 rounded-lg'
+        maxlength='4'
+        placeholder='YYYY'
+      />
+    </div>
     <button id='btnCalculate' class='bg-purple hover:bg-off-black transition-all p-5 rounded-full'>
       <img src='src/images/icon-arrow.svg' width='24' alt='icon-arrow' />
     </button>
+    <div id='lblYears'><span id='yearsValue'>--</span>year<span id='yearsPlural'></span></div>
   </main>
 </Layout>
