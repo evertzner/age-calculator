@@ -8,7 +8,6 @@ const Input = ({ labelText, maxLength, placeholder, onInputChange, error }) => {
         {labelText}
       </label>
       <input
-        id='input'
         type='text'
         className={`${
           error ? 'border-light-red' : 'border-light-grey'
@@ -19,7 +18,6 @@ const Input = ({ labelText, maxLength, placeholder, onInputChange, error }) => {
       />
       <span
         className={`${error ? 'opacity-100' : 'opacity-0'} text-light-red italic text-[10px] mt-1`}
-        id='error'
       >
         Wrong or empty value
       </span>
