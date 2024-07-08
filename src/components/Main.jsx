@@ -95,7 +95,7 @@ const Main = () => {
           className='bg-purple self-center z-30 hover:bg-off-black transition-all p-5 rounded-full'
           onClick={timeFromGivenDate}
         >
-          <img src='src/images/icon-arrow.svg' width='24' alt='icon-arrow' />
+          <img src='/icon-arrow.svg' width='24' alt='icon-arrow' />
         </button>
       </div>
       <div>
